@@ -13,14 +13,20 @@ app.use(cors());
 app.post('/record', (req, res) => {
   
   const newData = req.body;
+  if (newData["name"] && newData["highestWeight"] && newData["mostFish"] && newData["points"]) {
 
-  let fileData = fs.readFileSync(dataPath);
-  let JsonData = JSON.parse(fileData);
-
-  JsonData["Leaderboard"].push(newData);
-
-  fs.writeFileSync(dataPath, JSON.stringify(JsonData));
-  res.send(req.body);
+    let fileData = fs.readFileSync(dataPath);
+    let JsonData = JSON.parse(fileData);
+    
+    JsonData["Leaderboard"].push(newData);
+    
+    fs.writeFileSync(dataPath, JSON.stringify(JsonData));
+    res.send(req.body);
+  }
+  else {
+    res.status(500);
+    res.send("fail");
+  }
 
 });
 
